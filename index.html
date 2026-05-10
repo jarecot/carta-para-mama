@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Mamá — Con todo mi amor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #fdf6ec;
+    --warm: #f5e9d3;
+    --rose: #c9856a;
+    --rose-light: #e8b49a;
+    --brown: #7a4f3a;
+    --brown-dark: #4a2e1e;
+    --gold: #c9a96e;
+    --gold-light: #e8d4a8;
+    --ink: #2c1a0e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(201,133,106,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,169,110,0.07) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+  }
+
+  /* Decorative top border */
+  .ornament-top {
+    text-align: center;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.2s;
+  }
+
+  .ornament-top svg {
+    width: 320px;
+    max-width: 90%;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 55px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.5s;
+  }
+
+  .label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 18px;
+  }
+
+  .title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--brown-dark);
+    margin-bottom: 14px;
+  }
+
+  .title span {
+    color: var(--rose);
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--brown);
+    letter-spacing: 0.5px;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 38px 0;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .divider-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+    flex-shrink: 0;
+  }
+
+  /* Body text */
+  .body {
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 0.9s;
+  }
+
+  .opening {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var(--brown);
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .stanza {
+    margin-bottom: 36px;
+    line-height: 1.95;
+    font-size: 1.18rem;
+    font-weight: 300;
+    color: #3a200f;
+  }
+
+  .stanza p {
+    margin-bottom: 10px;
+  }
+
+  /* Highlighted sayings / refranes */
+  .dicho {
+    display: block;
+    margin: 28px 0;
+    padding: 18px 28px;
+    border-left: 3px solid var(--rose);
+    background: linear-gradient(135deg, rgba(201,133,106,0.07), rgba(201,169,110,0.05));
+    border-radius: 0 8px 8px 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.08rem;
+    color: var(--brown-dark);
+    line-height: 1.75;
+    position: relative;
+  }
+
+  .dicho::before {
+    content: '❝';
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    font-size: 1.8rem;
+    color: var(--rose-light);
+    font-style: normal;
+    line-height: 1;
+  }
+
+  /* Closing verse */
+  .closing-verse {
+    text-align: center;
+    margin: 50px 0 40px;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, rgba(201,133,106,0.08), rgba(201,169,110,0.06));
+    border-radius: 4px;
+    border: 1px solid rgba(201,169,110,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .closing-verse::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--rose), var(--gold));
+  }
+
+  .closing-verse::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), var(--rose));
+  }
+
+  .closing-verse p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    color: var(--brown-dark);
+    line-height: 2;
+    margin-bottom: 8px;
+  }
+
+  .closing-verse .author-line {
+    margin-top: 22px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    font-style: normal;
+  }
+
+  /* Signature */
+  .signature {
+    text-align: right;
+    margin-top: 45px;
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 1.4s;
+  }
+
+  .signature-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .signature-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--brown-dark);
+    line-height: 1.2;
+  }
+
+  /* Bottom ornament */
+  .ornament-bottom {
+    text-align: center;
+    margin-top: 55px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.6s;
+  }
+
+  /* Floating petals */
+  .petal {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50% 0;
+    background: var(--rose-light);
+    opacity: 0;
+    pointer-events: none;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.5; }
+    80% { opacity: 0.3; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Heart pulse */
+  .heart {
+    display: inline-block;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  @media (max-width: 540px) {
+    .page { padding: 40px 24px 60px; }
+    .stanza { font-size: 1.08rem; }
+    .dicho { padding: 14px 20px; }
+  }
+
+  /* Print styles */
+  @media print {
+    body::before { display: none; }
+    .petal { display: none; }
+    * { animation: none !important; opacity: 1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating petals -->
+<script>
+  window.addEventListener('load', () => {
+    for (let i = 0; i < 12; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        width: ${6 + Math.random() * 6}px;
+        height: ${6 + Math.random() * 6}px;
+        animation-duration: ${12 + Math.random() * 18}s;
+        animation-delay: ${Math.random() * 20}s;
+        opacity: ${0.2 + Math.random() * 0.3};
+        border-radius: ${Math.random() > 0.5 ? '50% 0' : '0 50%'};
+        background: ${Math.random() > 0.5 ? '#e8b49a' : '#c9a96e'};
+      `;
+      document.body.appendChild(p);
+    }
+  });
+</script>
+
+<div class="page">
+
+  <!-- Top ornament -->
+  <div class="ornament-top">
+    <svg viewBox="0 0 320 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="20" x2="120" y2="20" stroke="#c9a96e" stroke-width="0.8" opacity="0.6"/>
+      <path d="M130 20 Q145 6 160 20 Q175 34 190 20" stroke="#c9856a" stroke-width="1.2" fill="none"/>
+      <circle cx="160" cy="20" r="3" fill="#c9856a" opacity="0.8"/>
+      <circle cx="130" cy="20" r="2" fill="#c9a96e" opacity="0.6"/>
+      <circle cx="190" cy="20" r="2" fill="#c9a96e" opacity="0.6"/>
+      <line x1="200" y1="20" x2="320" y2="20" stroke="#c9a96e" stroke-width="0.8" opacity="0.6"/>
+      <circle cx="0" cy="20" r="2" fill="#c9a96e" opacity="0.4"/>
+      <circle cx="320" cy="20" r="2" fill="#c9a96e" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="label">Una carta del alma</div>
+    <h1 class="title">Para ti,<br><span>mamá</span></h1>
+    <p class="subtitle">Con gratitud, con memoria, con todo el amor del mundo</p>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <p class="opening">
+      Mamá,<br>
+      hay cosas que uno no sabe cómo decir.<br>
+      Cosas que viven guardadas adentro,<br>
+      calentitas, como tu cocina en las mañanas.<br>
+      Hoy quiero intentarlo.
+    </p>
+
+    <div class="stanza">
+      <p>Tú nos enseñaste que el mundo se camina con la frente en alto,
+      que el saludo es la primera ropa que uno se pone en la mañana,
+      que la buena actitud no cuesta nada y lo vale todo.</p>
+      <p>Nos lo dijiste mil veces sin saberlo —
+      con tu manera de entrar a un cuarto,
+      con tu forma de estrechar una mano,
+      con esa dignidad tuya que no grita pero se siente.</p>
+    </div>
+
+    <div class="dicho">
+      "A no salir mal vestidos, porque uno no sabe a quién se va a encontrar.
+      Y si se lo encuentran, no vayan a decir: 've cómo anda esa señora
+      tan elegante y los hijos los tiene así…'"
+      <br><br>
+      No lo decías por vanidad, mamá.
+      Lo decías porque representábamos algo tuyo,
+      y tú siempre nos entregaste lo mejor.
+    </div>
+
+    <div class="stanza">
+      <p>Cuántas veces salimos a algún evento seguros de que allá habría comida,
+      y tú, más sabia que todos nosotros juntos, ya habías resuelto el asunto.</p>
+    </div>
+
+    <div class="dicho">
+      "A tu mochila un bollo" —
+      lo decías casi en broma,
+      pero era amor puro disfrazado de refrán.
+      Era tu manera de decirnos: <em>yo ya pensé en ustedes</em>.
+    </div>
+
+    <div class="stanza">
+      <p>Y en la casa, ¡ay en la casa!, tú tenías ojos en la nuca
+      y en cada rincón. Nada se te escapaba.</p>
+    </div>
+
+    <div class="dicho">
+      "¡Ojo pelao!" —
+      no era desconfianza, era custodia.
+      Era una madre que velaba su nido
+      con la seriedad de quien sabe
+      lo que cuesta construir un hogar.
+    </div>
+
+    <div class="stanza">
+      <p>Y nosotros, claro, dejábamos todo para última hora.
+      Las tareas, los recados, los pendientes de siempre.</p>
+    </div>
+
+    <div class="dicho">
+      "¡Todo lo dejan pa'l tiempo y un palito!" —
+      decías con esa voz que mezclaba regaño con ternura,
+      porque nunca en tu vida
+      dejaste que nada importante se quedara sin hacer.
+      Tú eras la que madrugaba cuando todos dormíamos.
+      Tú eras la que no descansaba hasta que todo estaba bien.
+    </div>
+
+    <div class="stanza">
+      <p>Y a veces, mamá, yo miraba todo lo que hacías
+      y pensaba: <em>eso es mucha berraquera</em>.</p>
+    </div>
+
+    <div class="dicho">
+      Porque sí. Eso era —y eres— tú:<br>
+      mucha berraquera.<br><br>
+      Una mujer que cargó dolores sin que se los viéramos en la cara,
+      que tuvo días malos y aun así se levantó a darnos los buenos.
+      Que tuvo enfermedades, angustias, cansancios que nadie conoce del todo,
+      y aun así estuvo.
+      Siempre estuvo.
+    </div>
+
+    <div class="stanza">
+      <p>Eso es lo que más me roba el aliento cuando pienso en ti:
+      que no importó cuánto doliera, cuánto pesara, cuánto costara —
+      tú siempre apareciste.</p>
+      <p>Con las manos llenas o vacías, pero siempre llena de amor.
+      Con fuerzas o sin ellas, pero con el corazón encendido.</p>
+      <p>Ese amor tuyo no preguntó condiciones.
+      No pidió aplausos. No esperó las gracias.
+      Simplemente fluyó, como el agua que no sabe hacer otra cosa
+      sino dar vida a todo lo que toca.</p>
+    </div>
+
+    <!-- Central closing verse -->
+    <div class="closing-verse">
+      <p>Gracias por enseñarme a saludar,<br>
+      a caminar sin doblar la cabeza,<br>
+      a llevarme algo en la mochila<br>
+      para cuando el mundo no tenga nada que darme.</p>
+
+      <p>Gracias por velar cuando yo dormía,<br>
+      por madrugar cuando yo descuidé,<br>
+      por estar —<em>siempre estar</em>—<br>
+      aunque el cuerpo te dijera que no,<br>
+      aunque la vida te pusiera pruebas<br>
+      que yo no hubiera sabido cargar.</p>
+
+      <p>Eres la persona más valiente que conozco.<br>
+      La más constante. La más nuestra.<br>
+      Y si algún día llegué a ser algo bueno,<br>
+      algo digno, algo que valga,<br>
+      fue porque tú me lo pusiste en el alma<br>
+      antes de que yo supiera que lo necesitaba.</p>
+
+      <div class="author-line"><span class="heart">♥</span> &nbsp; Te amo, mamá &nbsp; <span class="heart">♥</span></div>
+    </div>
+
+    <!-- Signature -->
+    <div class="signature">
+      <div class="signature-label">Con el alma entera</div>
+      <div class="signature-name">Tu hijo/a,<br>para siempre</div>
+    </div>
+
+  </div>
+
+  <!-- Bottom ornament -->
+  <div class="ornament-bottom">
+    <svg viewBox="0 0 320 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="25" x2="100" y2="25" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/>
+      <path d="M110 25 Q120 10 130 25" stroke="#c9856a" stroke-width="1" fill="none" opacity="0.7"/>
+      <path d="M140 15 Q160 35 180 15" stroke="#c9856a" stroke-width="1.2" fill="none"/>
+      <path d="M190 25 Q200 10 210 25" stroke="#c9856a" stroke-width="1" fill="none" opacity="0.7"/>
+      <circle cx="160" cy="25" r="2.5" fill="#c9856a"/>
+      <circle cx="110" cy="25" r="1.5" fill="#c9a96e" opacity="0.6"/>
+      <circle cx="210" cy="25" r="1.5" fill="#c9a96e" opacity="0.6"/>
+      <line x1="220" y1="25" x2="320" y2="25" stroke="#c9a96e" stroke-width="0.8" opacity="0.5"/>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>
